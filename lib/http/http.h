@@ -21,9 +21,9 @@
 #define WEB_PORT "80"
 #define WEB_PATH "/"
 
-static const char *TAG = "example";
+const char *HTTP = "HTTP";
 
-static const char *REQUEST = "GET " WEB_PATH " HTTP/1.0\r\n"
+const char *REQUEST = "GET " WEB_PATH " HTTP/1.0\r\n"
     "Host: "WEB_SERVER":"WEB_PORT"\r\n"
     "User-Agent: esp-idf/1.0 esp32\r\n"
     "\r\n";
