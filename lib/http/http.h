@@ -1,5 +1,5 @@
 #ifndef HTTP_H
-#define HTTP_H	
+#define HTTP_H
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -24,10 +24,9 @@
 const char *HTTP = "HTTP";
 
 const char *REQUEST = "GET " WEB_PATH " HTTP/1.0\r\n"
-    "Host: "WEB_SERVER":"WEB_PORT"\r\n"
-    "User-Agent: esp-idf/1.0 esp32\r\n"
-    "\r\n";
-
+                      "Host: " WEB_SERVER ":" WEB_PORT "\r\n"
+                      "User-Agent: esp-idf/1.0 esp32\r\n"
+                      "\r\n";
 
 void http_get_task(void *pvParameters);
 
@@ -36,6 +35,5 @@ void http_get_task(void *pvParameters);
 // ESP_ERROR_CHECK(esp_event_loop_create_default());
 
 // xTaskCreate(&http_get_task, "http_get_task", 4096, NULL, 5, NULL);
-
 
 #endif

@@ -1,6 +1,5 @@
 #include "http.h"
 
-
 void http_get_task(void *pvParameters)
 {
     const struct addrinfo hints = {
@@ -12,10 +11,12 @@ void http_get_task(void *pvParameters)
     int s, r;
     char recv_buf[BUFF_LEN];
 
-    while(1) {
+    while (1)
+    {
         int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
 
-        if(err != 0 || res == NULL) {
+        if (err != 0 || res == NULL)
+        {
             ESP_LOGE(HTTP, "DNS lookup failed err=%d res=%p", err, res);
             vTaskDelay(1000 / portTICK_PERIOD_MS);
             continue;
@@ -28,7 +29,8 @@ void http_get_task(void *pvParameters)
         ESP_LOGI(HTTP, "DNS lookup succeeded. IP=%s", inet_ntoa(*addr));
 
         s = socket(res->ai_family, res->ai_socktype, 0);
-        if(s < 0) {
+        if (s < 0)
+        {
             ESP_LOGE(HTTP, "... Failed to allocate socket.");
             freeaddrinfo(res);
             vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -36,7 +38,8 @@ void http_get_task(void *pvParameters)
         }
         ESP_LOGI(HTTP, "... allocated socket");
 
-        if(connect(s, res->ai_addr, res->ai_addrlen) != 0) {
+        if (connect(s, res->ai_addr, res->ai_addrlen) != 0)
+        {
             ESP_LOGE(HTTP, "... socket connect failed errno=%d", errno);
             close(s);
             freeaddrinfo(res);
@@ -47,7 +50,8 @@ void http_get_task(void *pvParameters)
         ESP_LOGI(HTTP, "... connected");
         freeaddrinfo(res);
 
-        if (write(s, REQUEST, strlen(REQUEST)) < 0) {
+        if (write(s, REQUEST, strlen(REQUEST)) < 0)
+        {
             ESP_LOGE(HTTP, "... socket send failed");
             close(s);
             vTaskDelay(4000 / portTICK_PERIOD_MS);
@@ -59,7 +63,8 @@ void http_get_task(void *pvParameters)
         receiving_timeout.tv_sec = 5;
         receiving_timeout.tv_usec = 0;
         if (setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &receiving_timeout,
-                sizeof(receiving_timeout)) < 0) {
+                       sizeof(receiving_timeout)) < 0)
+        {
             ESP_LOGE(HTTP, "... failed to set socket receiving timeout");
             close(s);
             vTaskDelay(4000 / portTICK_PERIOD_MS);
@@ -68,17 +73,20 @@ void http_get_task(void *pvParameters)
         ESP_LOGI(HTTP, "... set socket receiving timeout success");
 
         /* Read HTTP response */
-        do {
+        do
+        {
             bzero(recv_buf, sizeof(recv_buf));
-            r = read(s, recv_buf, sizeof(recv_buf)-1);
-            for(int i = 0; i < r; i++) {
+            r = read(s, recv_buf, sizeof(recv_buf) - 1);
+            for (int i = 0; i < r; i++)
+            {
                 putchar(recv_buf[i]);
             }
-        } while(r > 0);
+        } while (r > 0);
 
         ESP_LOGI(HTTP, "... done reading from socket. Last read return=%d errno=%d.", r, errno);
         close(s);
-        for(int countdown = 10; countdown >= 0; countdown--) {
+        for (int countdown = 10; countdown >= 0; countdown--)
+        {
             ESP_LOGI(HTTP, "%d... ", countdown);
             vTaskDelay(1000 / portTICK_PERIOD_MS);
         }

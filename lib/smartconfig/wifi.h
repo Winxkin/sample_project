@@ -13,7 +13,8 @@
 #include "esp_system.h"
 #include "esp_smartconfig.h"
 #include "esp_netif.h"
-
+#define WIFI_CONNECTED 1
+#define WIFI_STATUS_SET 0
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
 EventGroupHandle_t s_wifi_event_group;
 
@@ -23,13 +24,10 @@ EventGroupHandle_t s_wifi_event_group;
 const int CONNECTED_BIT = BIT0;
 const int ESPTOUCH_DONE_BIT = BIT1;
 const char *WIFI = "smartconfig_wifi";
+int smartconfig_status;
 
-void smartconfig_task(void * parm);
-
-void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
-
+void smartconfig_task(void *parm);
+void wifi_even_handle(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
 void initialise_wifi(void);
-
-
 
 #endif
