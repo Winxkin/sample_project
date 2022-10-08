@@ -91,11 +91,15 @@ static long __frequency;
  * Function define here
  * */
 int sx1278_init(void);
+void sx1278_set_frequency(long frequency);
+void sx1278_enable_crc(void);
 void sx1278_send_packet(uint8_t *buf, int size);
 int sx1278_receive_packet(uint8_t *buf, int size);
 int sx1278_received(void);
 int sx1278_packet_rssi(void);
 float sx1278_packet_snr(void);
 void sx1278_close(void);
+void sx1278_receive(void);
+int sx1278_received(void);
 
 #endif
